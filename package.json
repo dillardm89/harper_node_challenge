@@ -1,0 +1,32 @@
+{
+  "name": "harper_node_challenge",
+  "version": "1.0.0",
+  "description": "The purpose of this challenge is for you to demonstrate familiarity with Node.js, asynchronous streaming, and scalable server architecture, and to act as a starting point for further conversation with you. We would also like you to read the introduction to building applications with Harper, so we can discuss your solution in the context of the Harper platform.",
+  "main": "index.js",
+  "scripts": {
+    "seed": "ts-node seed.ts",
+    "start": "ts-node server.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dillardm89/harper_node_challenge.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/dillardm89/harper_node_challenge/issues"
+  },
+  "homepage": "https://github.com/dillardm89/harper_node_challenge#readme",
+  "dependencies": {
+    "@faker-js/faker": "^9.8.0",
+    "lmdb": "^3.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.24",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}
