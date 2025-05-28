@@ -2,28 +2,48 @@
 
 ### Project Setup
 
-This project is setup to run in Docker with a single command:
+This project is setup to run with a single script that seeds the database and starts the server,
+using either values set with env variables or default values (default seed is 200, default port is 3000)
 
 ```bash
+
+npm run dev
 
 ```
 
-Alternately, you can run it locally with the following steps:
+Alternately, you can run the following separate commands:
 
 ```bash
 
-# Install dependencies
-npm install
-
-# Seed database (optionally set number of records to seed, default is 100)
+# Seed database
 npm run seed
-# OR
-npm run seed -- 50
 
-# Start server and stream data (optionally set a custom port, default is 3000)
+# Start server
 npm run start
-# OR
-PORT=4000 npm run start
+
+# Run tests
+npm run test
+
+# Run linting
+npm run lint
+
+```
+
+### Stream Data
+
+Below are the route options for streaming the data from: http://localhost:3000 (or your chosen port)
+
+```bash
+
+# Stream all users
+GET "/"
+
+# Stream first 100 users
+GET "/?limit=100"
+
+# Stream from start key to limit
+GET "/?startKey=user:101&limit=50"
+
 ```
 
 ### Overview
