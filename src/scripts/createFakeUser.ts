@@ -2,9 +2,9 @@ import { faker } from "@faker-js/faker";
 import { type User } from '../models/user';
 
 /**
- * Function to create fake users when seeding DB
- * @param {string} id - unique id for the user
- * @returns {User} - fake user
+ * Create fake users for seeding DB
+ * @param {string} id
+ * @returns {User}
  */
 export function createFakeUser(id: string): User {
     const firstName = faker.person.firstName();

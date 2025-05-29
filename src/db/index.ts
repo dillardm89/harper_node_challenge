@@ -1,22 +1,19 @@
 import { open, RootDatabase } from "lmdb";
-import path from "path";
 import fs from "fs";
-import { log } from '../utils/logs/log';
-
-// Root directory for all LMDB data files, can be changed via LMDB_DATA_DIR in env variables
-const dataDir = process.env.LMDB_DATA_DIR || path.join(__dirname, "data");
+import { log } from "../utils/log";
+import { DATA_DIR } from "../utils/vars";
 
 /**
  * Create and return LMDB Store
- * @template T - type of the values stored in the db
- * @param {string} name - name of db
- * @returns {RootDatabase<T>} - typed RootDatabase instance
+ * @template T
+ * @param {string} dbName
+ * @returns {RootDatabase<T>}
  */
-export function createDB<T>(name: string): RootDatabase<T> {
+export function createDB<T>(dbName: string): RootDatabase<T> {
   // Configure data directory
   try {
-    if (!fs.existsSync(dataDir)) {
-      fs.mkdirSync(dataDir, { recursive: true });
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
     }
   } catch (err) {
     log.error("Failed to create data directory:", err);
@@ -25,10 +22,8 @@ export function createDB<T>(name: string): RootDatabase<T> {
 
   // Create LMDB store
   return open({
-    path: dataDir,
-    name,
+    path: DATA_DIR,
+    name: dbName,
     compression: true,
   }) as RootDatabase<T>;
 }
-
-export { dataDir };
