@@ -2,41 +2,49 @@ import http, { IncomingMessage as Request, ServerResponse as Response } from "ht
 import { parse } from "url";
 import { createDB } from "../db";
 import { streamUsers } from './streamUsers';
-import { log } from "../utils/logs/log";
+import { log } from "../utils/log";
+import { DB_NAME, PORT } from "../utils/vars";
 import { type User } from "../models/user";
 
-// Config
-const PORT: number = parseInt(process.env.PORT || "3000", 10);
-const dbName = process.env.SEED_DB_NAME || "Users";
-const db = createDB<User>(dbName);
+/**
+ * Create http server with Get "/" endpoint for streaming users from db
+ * @returns {http.Server}
+ */
+export function createServer(): http.Server {
+  const db = createDB<User>(DB_NAME);
 
-// Create HTTP server
-const server: http.Server = http.createServer(async (req: Request, res: Response) => {
-  try {
-    // Parse pathname
-    const { pathname } = parse(req.url || "", true);
+  // Create HTTP server
+  const server: http.Server = http.createServer(async (req: Request, res: Response) => {
+    try {
+      const { pathname } = parse(req.url || "", true);
 
-    if (pathname === "/" && req.method === "GET") {
-      // Set response header
-      res.writeHead(200, { "Content-Type": "application/json" });
+      if (pathname === "/" && req.method === "GET") {
+        // Set response header
+        res.writeHead(200, { "Content-Type": "application/json" });
 
-      // Stream Users
-      await streamUsers(db, req, res);
-    } else {
-      // Handle invalid request method and route
-      res.writeHead(404, { "Content-Type": "text/plain" });
-      res.end("Not Found");
+        // Stream Users
+        await streamUsers(db, req, res);
+      } else {
+        // Handle invalid request method and route
+        res.writeHead(404, { "Content-Type": "text/plain" });
+        res.end("Not Found");
+      }
+    } catch (error) {
+      log.error("Unhandled error in server:", error);
+      if (!res.headersSent) {
+        res.writeHead(500, { "Content-Type": "text/plain" });
+      }
+      res.end("Internal Server Error");
     }
-  } catch (error) {
-    log.error("Unhandled error in server:", error);
-    if (!res.headersSent) {
-      res.writeHead(500, { "Content-Type": "text/plain" });
-    }
-    res.end("Internal Server Error");
-  }
-});
+  });
 
-// Start the server
-server.listen(PORT, () => {
-  log.info(`Server is running at http://localhost:${PORT}`);
-});
+  return server;
+}
+
+// Start the server if running directly
+if (require.main === module) {
+  const server = createServer();
+  server.listen(PORT, () => {
+    log.info(`Server is running at http://localhost:${PORT}`);
+  });
+}

@@ -4,6 +4,11 @@ import prettier from "eslint-config-prettier";
 import { defineConfig } from "eslint/config";
 
 export default defineConfig([
+  // Global ignores
+  {
+    ignores: ["node_modules/**", "src/utils/logs/**", "tests/**"]
+  },
+
   // ESLint recommended rules
   eslint.configs.recommended,
 
@@ -13,7 +18,6 @@ export default defineConfig([
   ...tseslint.configs.stylistic,
   {
     files: ["src/**/*.js"],
-    ignores: ["node_modules/**", "dist/**", "src/utils/**"],
     rules: {
       "no-console": "warn",
     },

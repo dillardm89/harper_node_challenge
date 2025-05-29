@@ -2,7 +2,7 @@
 
 ### Project Setup
 
-This project is setup to run with a single script that seeds the database and starts the server,
+This project is setup to run with a single command that seeds the database and starts the server,
 using either values set with env variables or default values (default seed is 200, default port is 3000)
 
 ```bash
@@ -18,8 +18,11 @@ Alternately, you can run the following separate commands:
 # Seed database
 npm run seed
 
-# Start server
+# Start a single server
 npm run start
+
+# Start a cluster of servers (set CLUSTER_COUNT env variable, default is 2, max is based on cpu cores)
+npm run start:cluster
 
 # Run tests
 npm run test
@@ -31,7 +34,7 @@ npm run lint
 
 ### Stream Data
 
-Below are the route options for streaming the data from: http://localhost:3000 (or your chosen port)
+Below are the route options for streaming the data from: http://localhost:3000 (or your env configured port)
 
 ```bash
 
@@ -43,6 +46,11 @@ GET "/?limit=100"
 
 # Stream from start key to limit
 GET "/?startKey=user:101&limit=50"
+
+# Filtering by user age (range: 18-80)
+GET "/?ageMin=20"
+GET "/?ageMax=30"
+GET "/?ageMin=25&ageMax=70"
 
 ```
 
@@ -61,9 +69,9 @@ The lmdb-js documentation also explains how you can set up a data store and put 
 And again, we would like you to read and familiarize yourself with Harper application documentation here. You will not need to write a Harper application or component, but we will discuss how you might approach that and considerations for ensuring scalability.
 
 Here are some considerations that we will discuss:
-● How did you ensure that this was responsive to back-pressure and termination? (With potentially unreliable/slow network connections.)
-● What are performance bottlenecks with your server, what kind of performance could be expected from this server?
-● Are there optimization opportunities for this?
-● How would you extend this server to utilize multiple CPU cores with concurrency (say a 32-core server) to increase scalability?
-● How would you filter the data to return a subset of the entries?
-● Can you describe some of the basic ways that Harper applications are built and how to ensure scalability for code and components written by other developers?
+  - How did you ensure that this was responsive to back-pressure and termination? (With potentially unreliable/slow network connections.)  
+  - What are performance bottlenecks with your server, what kind of performance could be expected from this server? 
+  - Are there optimization opportunities for this?  
+  - How would you extend this server to utilize multiple CPU cores with concurrency (say a 32-core server) to increase scalability?  
+  - How would you filter the data to return a subset of the entries?  
+  - Can you describe some of the basic ways that Harper applications are built and how to ensure scalability for code and components written by other developers?  
